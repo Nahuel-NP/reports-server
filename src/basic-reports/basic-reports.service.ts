@@ -9,7 +9,7 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     console.log('Connected to database');
   }
 
-  hello(): string {
-    return 'Hello World';
+  hello() {
+    return this.employees.findFirst();
   }
 }
