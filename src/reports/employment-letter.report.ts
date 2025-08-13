@@ -1,10 +1,6 @@
 import { cmToPoints } from 'src/helpers/cmToPoint.helper';
-import {
-  Content,
-  StyleDictionary,
-  type TDocumentDefinitions,
-} from 'pdfmake/interfaces';
-import { DateFormatter } from 'src/helpers/date-formatter.helper';
+import { StyleDictionary, type TDocumentDefinitions } from 'pdfmake/interfaces';
+import { headerSection } from './sections/header.section';
 
 const style: StyleDictionary = {
   headerTitle: {
@@ -22,26 +18,15 @@ const style: StyleDictionary = {
   },
 };
 
-const logo: Content = {
-  image: 'src/assets/tucan-code-logo.png',
-  width: cmToPoints(2.5),
-  height: cmToPoints(2.5),
-};
 export const getEmploymentLetterReport = (): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     styles: style,
     pageMargins: [cmToPoints(2.5), cmToPoints(3), cmToPoints(1), cmToPoints(2)],
-    header: {
-      columns: [
-        logo,
-        {
-          text: `${DateFormatter.getFormattedDate(new Date())}`,
-          alignment: 'right',
-          margin: [0, cmToPoints(1), cmToPoints(1), 0],
-        },
-      ],
-      margin: [cmToPoints(2.5), cmToPoints(1), cmToPoints(1), 0],
-    },
+    header: headerSection({
+      showLogo: true,
+      showDate: true,
+      title: 'Employment Letter',
+    }),
     content: [
       {
         text: 'Employment Letter',
