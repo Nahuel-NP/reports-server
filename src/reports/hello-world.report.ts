@@ -1,8 +1,13 @@
 import { type TDocumentDefinitions } from 'pdfmake/interfaces';
 
-export const getHelloWorldReport = () => {
+interface ReportOptions {
+  name: string;
+}
+export const getHelloWorldReport = (options: ReportOptions) => {
   const docDefinition: TDocumentDefinitions = {
-    content: ['Hello World'],
+    content: [`Hello ${options.name}`],
+    pageSize: 'A4',
+    pageMargins: [40, 40, 40, 40],
   };
   return docDefinition;
 };
