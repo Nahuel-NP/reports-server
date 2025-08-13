@@ -1,9 +1,10 @@
-import { cmToPoints } from 'helpers/cmToPoint.helper';
+import { cmToPoints } from 'src/helpers/cmToPoint.helper';
 import {
   Content,
   StyleDictionary,
   type TDocumentDefinitions,
 } from 'pdfmake/interfaces';
+import { DateFormatter } from 'src/helpers/date-formatter.helper';
 
 const style: StyleDictionary = {
   headerTitle: {
@@ -34,11 +35,7 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
       columns: [
         logo,
         {
-          text: `${new Date().toLocaleString('es-AR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}`,
+          text: `${DateFormatter.getFormattedDate(new Date())}`,
           alignment: 'right',
           margin: [0, cmToPoints(1), cmToPoints(1), 0],
         },
@@ -84,6 +81,11 @@ procedimientos establecidos por la empresa.\n\n
         style: 'signature',
       },
     ],
+    footer: {
+      text: 'Este documento es un ejemplo de constancia de empleo',
+      alignment: 'center',
+      fontSize: 10,
+    },
   };
   return docDefinition;
 };
