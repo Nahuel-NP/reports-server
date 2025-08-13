@@ -25,7 +25,6 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
     header: headerSection({
       showLogo: true,
       showDate: true,
-      title: 'Employment Letter',
     }),
     content: [
       {
