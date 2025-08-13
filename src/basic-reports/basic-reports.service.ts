@@ -38,10 +38,7 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     if (!employee) {
       throw new NotFoundException('Employee not found');
     }
-    console.log(
-      '🚀 ~ BasicReportsService ~ employmentLetterById ~ employee:',
-      employee,
-    );
+
     const docDefinition = getEmploymentLetterReportById({
       employerName: 'Nahuel',
       employerPosition: 'CEO',
