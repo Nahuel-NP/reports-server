@@ -54,8 +54,17 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     return doc;
   }
 
-  getCountriesReport() {
-    const docDefinition = getCountriesReport();
+  async getCountriesReport() {
+    const countries = await this.countries.findMany({
+      where: {
+        local_name: {
+          not: null,
+        },
+      },
+    });
+    const docDefinition = getCountriesReport({
+      countries,
+    });
     const doc = this.printerService.createPdf(docDefinition);
     return doc;
   }
