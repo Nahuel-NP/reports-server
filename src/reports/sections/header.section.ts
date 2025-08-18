@@ -13,24 +13,23 @@ const logo: Content = {
   width: cmToPoints(2.5),
   height: cmToPoints(2.5),
 };
+const currentDate: Content = {
+  text: DateFormatter.getFormattedDate(new Date()),
+  alignment: 'right',
+  marginTop: cmToPoints(1),
+};
 
 export const headerSection = (options: HeaderSectionOptions): Content => {
   const { showLogo = true, title, subtitle, showDate = true } = options;
 
   const headerLogo: Content = showLogo ? logo : '';
-  const headerDate: Content = showDate
-    ? {
-        text: DateFormatter.getFormattedDate(new Date()),
-        alignment: 'right',
-        marginTop: cmToPoints(1),
-      }
-    : '';
+  const headerDate: Content = showDate ? currentDate : '';
 
   const headerSubTitle: Content = subtitle
     ? {
         text: subtitle,
         alignment: 'center',
-        margin: [0, 2, 0, 0],
+        margin: [0, 0, 0, 0],
         style: {
           fontSize: 16,
           bold: true,
@@ -40,23 +39,30 @@ export const headerSection = (options: HeaderSectionOptions): Content => {
 
   const headerTitle: Content = title
     ? {
-        stack: [
-          {
-            text: title,
-            alignment: 'center',
-            margin: [0, cmToPoints(0.5), 0, 0],
-            style: {
-              bold: true,
-              fontSize: 22,
-            },
-          },
-          headerSubTitle,
-        ],
+        text: title,
+        alignment: 'center',
+        margin: [0, cmToPoints(0.5), 0, 0],
+        style: {
+          bold: true,
+          fontSize: 22,
+        },
       }
     : '';
 
   return {
-    columns: [headerLogo, headerTitle, headerDate],
+    columns: [
+      headerLogo,
+      {
+        stack: [headerTitle, headerSubTitle],
+        alignment: 'center',
+        width: '*',
+      },
+      {
+        stack: [headerDate],
+        alignment: 'right',
+        width: 'auto',
+      },
+    ],
     margin: [cmToPoints(2.5), cmToPoints(1), cmToPoints(1), cmToPoints(0)],
   };
 };
