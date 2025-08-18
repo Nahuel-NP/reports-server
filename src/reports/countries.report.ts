@@ -2,6 +2,7 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { headerSection } from './sections/header.section';
 import { cmToPoints } from 'src/helpers/cmToPoint.helper';
 import { countries as Country } from '@prisma/client';
+import { footerSection } from './sections/footer.section';
 
 interface ReportOptions {
   title?: string;
@@ -25,8 +26,14 @@ export const getCountriesReport = (
       showLogo: true,
       showDate: true,
     }),
+    footer: footerSection,
     pageSize: 'A4',
-    pageMargins: [cmToPoints(2.5), cmToPoints(4), cmToPoints(1), cmToPoints(1)],
+    pageMargins: [
+      cmToPoints(2.5),
+      cmToPoints(4),
+      cmToPoints(1),
+      cmToPoints(1.5),
+    ],
     content: [
       {
         layout: 'lightHorizontalLines',

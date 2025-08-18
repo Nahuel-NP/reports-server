@@ -64,6 +64,8 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     });
     const docDefinition = getCountriesReport({
       countries,
+      title: 'Reporte de paises',
+      subtitle: 'Listado de paises',
     });
     const doc = this.printerService.createPdf(docDefinition);
     return doc;
