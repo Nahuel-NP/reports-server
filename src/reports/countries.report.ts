@@ -39,7 +39,7 @@ export const getCountriesReport = (
               country.id.toString(),
               country.iso2 ? country.iso2 : '',
               country.iso3 ? country.iso3 : '',
-              country.name ? country.name : '',
+              { text: country.name ? country.name : '', bold: true },
               country.continent ? country.continent : '',
               country.local_name ? country.local_name : '',
             ]),
