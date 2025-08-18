@@ -9,6 +9,7 @@ interface ReportOptions {
   subtitle?: string;
   countries: Country[];
 }
+
 export const getCountriesReport = (
   options: ReportOptions,
 ): TDocumentDefinitions => {
@@ -36,12 +37,19 @@ export const getCountriesReport = (
     ],
     content: [
       {
-        layout: 'lightHorizontalLines',
+        layout: 'customLayout01',
         table: {
           headerRows: 1,
           widths: [50, 50, 50, '*', '*', '*'],
           body: [
-            ['ID', 'ISO2', 'ISO3', 'Name', 'Continent', 'Local Name'],
+            [
+              { text: 'ID', color: 'white' },
+              { text: 'ISO2', color: 'white' },
+              { text: 'ISO3', color: 'white' },
+              { text: 'Name', color: 'white' },
+              { text: 'Continent', color: 'white' },
+              { text: 'Local Name', color: 'white' },
+            ],
             ...countries.map((country) => [
               country.id.toString(),
               country.iso2 ? country.iso2 : '',
