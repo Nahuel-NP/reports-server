@@ -10,5 +10,6 @@ export const footerSection = (
     text: `Página ${currentPage} de ${pageCount}`,
     alignment: 'right',
     margin: [0, 0, cmToPoints(1), 0],
+    bold: true,
   };
 };
