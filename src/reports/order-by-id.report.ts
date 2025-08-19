@@ -5,6 +5,7 @@ import {
 } from 'pdfmake/interfaces';
 import { cmToPoints } from 'src/helpers/cmToPoint.helper';
 import { DateFormatter } from 'src/helpers/date-formatter.helper';
+import { footerSection } from './sections/footer.section';
 
 const styles: StyleDictionary = {
   header: {
@@ -24,7 +25,8 @@ export const orderByIdReport = (): TDocumentDefinitions => {
       columns: [logo],
       margin: [cmToPoints(2), cmToPoints(1), cmToPoints(0), cmToPoints(0)],
     },
-    pageMargins: [cmToPoints(2), cmToPoints(1), cmToPoints(2), cmToPoints(0)],
+    footer: footerSection,
+    pageMargins: [cmToPoints(2), cmToPoints(1), cmToPoints(2), cmToPoints(2)],
     content: [
       {
         text: 'Tucan code',
@@ -36,7 +38,10 @@ export const orderByIdReport = (): TDocumentDefinitions => {
             text: 'Calle falsa 123, Puerto Vilelas\nChaco, ARGENTINA.\nCUIT: 20-12312312-1\nhttps://pedroso-nahuel.vercel.app/',
           },
           {
-            text: `Recibo no. #123123\n${DateFormatter.getFormattedDate(new Date())}\nConsumidor final`,
+            text: [
+              { text: 'Recibo no. #123123', bold: true, fontSize: 14 },
+              `\n${DateFormatter.getFormattedDate(new Date())}\nConsumidor final`,
+            ],
             alignment: 'right',
           },
         ],
@@ -46,6 +51,18 @@ export const orderByIdReport = (): TDocumentDefinitions => {
         fit: 100,
         alignment: 'right',
         margin: [0, cmToPoints(0.5)],
+      },
+      {
+        text: [
+          {
+            text: 'Cobrar a:\n',
+            bold: true,
+          },
+          `Razon social: Ejemplo
+           CUIT: 20-12312312-1
+           Domicilio: calle falsa 123, Puerto Vilelas
+           Chaco, ARGENTINA.`,
+        ],
       },
     ],
   };
