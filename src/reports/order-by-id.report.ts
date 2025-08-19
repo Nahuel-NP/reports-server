@@ -33,13 +33,19 @@ export const orderByIdReport = (): TDocumentDefinitions => {
       {
         columns: [
           {
-            text: 'Calle falsa 123, Puerto Vilelas\nChaco, ARGENTINA.\nCUIT: 20-12312312-1\nhttps://pedroso.nahuel.dev.com',
+            text: 'Calle falsa 123, Puerto Vilelas\nChaco, ARGENTINA.\nCUIT: 20-12312312-1\nhttps://pedroso-nahuel.vercel.app/',
           },
           {
             text: `Recibo no. #123123\n${DateFormatter.getFormattedDate(new Date())}\nConsumidor final`,
             alignment: 'right',
           },
         ],
+      },
+      {
+        qr: 'https://pedroso-nahuel.vercel.app/',
+        fit: 100,
+        alignment: 'right',
+        margin: [0, cmToPoints(0.5)],
       },
     ],
   };
