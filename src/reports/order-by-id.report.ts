@@ -19,9 +19,59 @@ const logo: Content = {
   image: 'src/assets/tucan-banner.png',
   width: cmToPoints(4),
 };
-export const orderByIdReport = (): TDocumentDefinitions => {
+
+export interface CompleteOrderData {
+  order_id: number;
+  customer_id: number;
+  order_date: Date;
+  customers: Customers;
+  order_details: OrderDetail[];
+}
+
+export interface Customers {
+  customer_id: number;
+  customer_name: string;
+  contact_name: string;
+  address: string;
+  city: string;
+  postal_code: string;
+  country: string;
+}
+
+export interface OrderDetail {
+  order_detail_id: number;
+  order_id: number;
+  product_id: number;
+  quantity: number;
+  products: Products;
+}
+
+export interface Products {
+  product_id: number;
+  product_name: string;
+  category_id: number;
+  unit: string;
+  price: string;
+}
+
+interface ReportValue {
+  title?: string;
+  data: CompleteOrderData;
+}
+export const orderByIdReport = ({
+  title,
+  data,
+}: ReportValue): TDocumentDefinitions => {
+  const { customers, order_details } = data;
+
+  const subTotal = order_details.reduce((acc, orderDetail) => {
+    return acc + Number(orderDetail.products.price) * orderDetail.quantity;
+  }, 0);
   return {
     styles: styles,
+    info: {
+      title,
+    },
     header: {
       columns: [logo],
       margin: [cmToPoints(2), cmToPoints(1), cmToPoints(0), cmToPoints(0)],
@@ -40,8 +90,8 @@ export const orderByIdReport = (): TDocumentDefinitions => {
           },
           {
             text: [
-              { text: 'Recibo no. #123123', bold: true, fontSize: 14 },
-              `\n${DateFormatter.getFormattedDate(new Date())}\nConsumidor final`,
+              { text: `Recibo no. ${data.order_id}`, bold: true, fontSize: 14 },
+              `\n${DateFormatter.getFormattedDate(data.order_date)}\nConsumidor final`,
             ],
             alignment: 'right',
           },
@@ -59,10 +109,10 @@ export const orderByIdReport = (): TDocumentDefinitions => {
             text: 'Cobrar a:\n',
             bold: true,
           },
-          `Razon social: Ejemplo
-           CUIT: 20-12312312-1
-           Domicilio: calle falsa 123, Puerto Vilelas
-           Chaco, ARGENTINA.`,
+          `Razon social: ${customers.customer_name}
+           CUIT: ${customers.customer_id}
+           Domicilio: ${customers.address}
+           ${customers.city}, ${customers.country}.`,
         ],
         marginBottom: cmToPoints(1),
       },
@@ -73,26 +123,20 @@ export const orderByIdReport = (): TDocumentDefinitions => {
           widths: [50, '*', 'auto', 'auto', 'auto'],
           body: [
             ['ID', 'Descripción', 'Cantidad', 'Precio', 'Subtotal'],
-            [
-              '1',
-              'Descripción',
-              '1',
-              '1',
+            ...order_details.map((orderDetail) => [
+              orderDetail.order_detail_id,
+              orderDetail.products.product_name,
+              orderDetail.quantity,
+              CurrencyFormatter.formatCurrency(
+                Number(orderDetail.products.price),
+              ),
               {
-                text: CurrencyFormatter.formatCurrency(100),
+                text: CurrencyFormatter.formatCurrency(
+                  orderDetail.quantity * Number(orderDetail.products.price),
+                ),
                 alignment: 'right',
               },
-            ],
-            [
-              '2',
-              'Descripción',
-              '1',
-              '1',
-              {
-                text: CurrencyFormatter.formatCurrency(1400),
-                alignment: 'right',
-              },
-            ],
+            ]),
           ],
         },
       },
@@ -111,14 +155,14 @@ export const orderByIdReport = (): TDocumentDefinitions => {
                 [
                   'Subtotal',
                   {
-                    text: CurrencyFormatter.formatCurrency(1500),
+                    text: CurrencyFormatter.formatCurrency(subTotal),
                     alignment: 'right',
                   },
                 ],
                 [
-                  { text: 'Total', bold: true },
+                  { text: 'Total + IVA', bold: true },
                   {
-                    text: CurrencyFormatter.formatCurrency(1500),
+                    text: CurrencyFormatter.formatCurrency(subTotal * 1.21),
                     alignment: 'right',
                     bold: true,
                   },
