@@ -6,6 +6,7 @@ import {
 } from 'src/reports/order-by-id.report';
 import { PrismaClient } from '@prisma/client';
 import { OnModuleInit } from '@nestjs/common';
+import { getBasicChartSvgReport } from 'src/reports/basic-chart-svg.report';
 
 @Injectable()
 export class StoreReportsService extends PrismaClient implements OnModuleInit {
@@ -39,6 +40,12 @@ export class StoreReportsService extends PrismaClient implements OnModuleInit {
       title: 'Order Report',
       data: order as any as CompleteOrderData,
     });
+    const doc = this.printerService.createPdf(docDefinition);
+    return doc;
+  }
+
+  async getSvgCharts() {
+    const docDefinition = await getBasicChartSvgReport();
     const doc = this.printerService.createPdf(docDefinition);
     return doc;
   }
